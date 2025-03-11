@@ -17,7 +17,7 @@ type Product struct {
 
 func main() {
 	// Verbindung zur Datenbank
-	db, _ := sql.Open("postgres", "postgres://postgres:password@db:5432/shopdb?sslmode=disable")
+	db, _ := sql.Open("postgres", "postgres://postgres:password@shop-db:5432/shopdb?sslmode=disable")
 
 	// API-Endpunkt für Produkte
 	http.HandleFunc("/products", func(w http.ResponseWriter, r *http.Request) {
