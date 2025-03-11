@@ -1,0 +1,76 @@
+=== Start of ./go.mod ===
+module shop-datenbank
+
+go 1.23.1
+
+require github.com/lib/pq v1.10.9
+
+=== End of ./go.mod ===
+
+=== Start of ./dockerfile ===
+FROM golang:alpine
+WORKDIR /app
+
+# Kopiere zuerst nur die Module-Dateien
+COPY go.mod go.sum* ./
+RUN go mod download
+
+# Dann kopiere den Rest des Codes
+COPY . .
+RUN go build -o main .
+EXPOSE 8080
+CMD ["./main"]
+
+=== End of ./dockerfile ===
+
+=== Start of ./go.sum ===
+github.com/lib/pq v1.10.9 h1:YXG7RB+JIjhP29X+OtkiDnYaXQwpS4JEWq7dtCCRUEw=
+github.com/lib/pq v1.10.9/go.mod h1:AlVN5x4E4T544tWzH6hKfbfQvm3HdbOxrmggDNAPY9o=
+
+=== End of ./go.sum ===
+
+=== Start of ./main.go ===
+package main
+
+import (
+	"database/sql"
+	"encoding/json"
+	"log"
+	"net/http"
+
+	_ "github.com/lib/pq"
+)
+
+type Product struct {
+	ID    string  `json:"id"`
+	Name  string  `json:"name"`
+	Price float64 `json:"price"`
+}
+
+func main() {
+	// Verbindung zur Datenbank
+	db, _ := sql.Open("postgres", "postgres://postgres:password@db:5432/shopdb?sslmode=disable")
+
+	// API-Endpunkt für Produkte
+	http.HandleFunc("/products", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+
+		// Produkte aus der Datenbank lesen
+		rows, _ := db.Query("SELECT id, name, price FROM products")
+
+		var products []Product
+		for rows.Next() {
+			var p Product
+			rows.Scan(&p.ID, &p.Name, &p.Price)
+			products = append(products, p)
+		}
+
+		json.NewEncoder(w).Encode(products)
+	})
+
+	log.Printf("Server starting on port 8080...")
+	http.ListenAndServe(":8080", nil)
+}
+
+=== End of ./main.go ===
+

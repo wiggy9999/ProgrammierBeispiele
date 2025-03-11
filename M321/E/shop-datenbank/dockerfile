@@ -1,0 +1,12 @@
+FROM golang:alpine
+WORKDIR /app
+
+# Kopiere zuerst nur die Module-Dateien
+COPY go.mod go.sum* ./
+RUN go mod download
+
+# Dann kopiere den Rest des Codes
+COPY . .
+RUN go build -o main .
+EXPOSE 8080
+CMD ["./main"]
