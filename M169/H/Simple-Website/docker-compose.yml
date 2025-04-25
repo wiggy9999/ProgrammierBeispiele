@@ -11,21 +11,21 @@ services:
     deploy:
       resources:
         limits:
-          cpus: # TODO: Optional: Sicherheitsmassnahme: Ressourcenlimits
-          memory: # TODO: Optional: Sicherheitsmassnahme: Ressourcenlimits
+          cpus: # TODO: Sicherheitsmassnahme: Ressourcenlimits
+          memory: # TODO: Sicherheitsmassnahme: Ressourcenlimits
 
   database:
     image: # TODO: mysql 8.0 Image wählen
     restart: # TODO: Restart-Policy wählen
     environment:
-      -  # TODO: MYSQL_ROOT_PASSWORD setzen (Optional aus .env Datei)
+      -  # TODO: MYSQL_ROOT_PASSWORD setzen (aus .env Datei)
     volumes:
       -  #TODO: Persistente Datenspeicherung implementieren /var/lib/mysql auf das Container-Volume db_data spiegeln
     deploy:
       resources:
         limits:
-          cpus: # TODO: Optional: Sicherheitsmassnahme: Ressourcenlimits
-          memory: # TODO: Optional: Sicherheitsmassnahme: Ressourcenlimits
+          cpus: # TODO: Sicherheitsmassnahme: Ressourcenlimits
+          memory: # TODO: Sicherheitsmassnahme: Ressourcenlimits
 
 volumes:
   #TODO: Benanntes Volume db_data für Datenbank hier definieren (damit die persistente Speicherung der Daten möglich wird)
