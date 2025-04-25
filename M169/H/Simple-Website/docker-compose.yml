@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  webserver:
+    image: #TODO: Verwenden Sie hier ihr eigenes Image welches Sie gebaut haben
+    ports:
+      -  #TODO: Ports freigeben
+    restart: #TODO: Restart-Policy wählen
+    depends_on:
+      -  #TODO: Sicherstellen, dass die Datenbank zuerst Startet
+    deploy:
+      resources:
+        limits:
+          cpus: # TODO: Optional: Sicherheitsmassnahme: Ressourcenlimits
+          memory: # TODO: Optional: Sicherheitsmassnahme: Ressourcenlimits
+
+  database:
+    image: # TODO: mysql 8.0 Image wählen
+    restart: # TODO: Restart-Policy wählen
+    environment:
+      -  # TODO: MYSQL_ROOT_PASSWORD setzen (Optional aus .env Datei)
+    volumes:
+      -  #TODO: Persistente Datenspeicherung implementieren /var/lib/mysql auf das Container-Volume db_data spiegeln
+    deploy:
+      resources:
+        limits:
+          cpus: # TODO: Optional: Sicherheitsmassnahme: Ressourcenlimits
+          memory: # TODO: Optional: Sicherheitsmassnahme: Ressourcenlimits
+
+volumes:
+  #TODO: Benanntes Volume db_data für Datenbank hier definieren (damit die persistente Speicherung der Daten möglich wird)
